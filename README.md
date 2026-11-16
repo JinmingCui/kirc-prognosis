@@ -1,10 +1,10 @@
-# TCGA复现实验第一阶段readme
+# AQP1 and Survival in Kidney Cancer (TCGA-KIRC)
 
 ## Background
 
 AQP1 (aquaporin-1) is a channel protein that transports water and is highly expressed in normal kidney tubules.
 
-In our previous study ([Liu et al., 2025](https://doi.org/10.1186/s40246-025-00726-9)), we measured AQP1 protein by immunohistochemistry in 370 patients with kidney tumors from Xinhua Hospital in Shanghai. We found that AQP1 expression was lower in tumors than in normal tissue. This project uses the publicly available TCGA-KIRC dataset to validate this finding in an independent cohort of patients with clear cell renal cell carcinoma (ccRCC). Unlike the previous study, which measured protein, this project uses RNA sequencing data, providing a test of whether the result holds across a different population and a different measurement method.
+In our previous study ([Liu et al., 2025](https://doi.org/10.1186/s40246-025-00726-9)), we measured AQP1 protein by immunohistochemistry in 370 patients with kidney tumors from Xinhua Hospital in Shanghai. We found that AQP1 expression was lower in tumors than in normal tissue，and that high AQP1 expression was an independent protective factor for overall survival.. This project uses the publicly available TCGA-KIRC dataset to validate this finding in an independent cohort of patients with clear cell renal cell carcinoma (ccRCC). Unlike the previous study, which measured protein, this project uses RNA sequencing data, providing a test of whether the result holds across a different population and a different measurement method.
 
 ## Data
 
