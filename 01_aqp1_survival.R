@@ -90,12 +90,14 @@ summary(cox_uni)        # HR = 0.36 (0.26-0.50)
 clin_sub <- clin %>%
   select(sample,
          age   = age_at_index.demographic,
-         stage = ajcc_pathologic_stage.diagnoses)
+         stage = ajcc_pathologic_stage.diagnoses,
+         gender = gender.demographic)
 
 df_multi <- df_clean %>%
   left_join(clin_sub, by = "sample") %>%
   mutate(stage = factor(stage,
-                        levels = c("Stage I", "Stage II", "Stage III", "Stage IV"))) %>%
+                        levels = c("Stage I", "Stage II", "Stage III", "Stage IV")),
+         gender = factor(gender, levels = c("female", "male"))) %>%
   filter(!is.na(age), !is.na(stage))
 
 nrow(df_multi)          # 526 patients (3 missing stage)
@@ -104,6 +106,11 @@ nrow(df_multi)          # 526 patients (3 missing stage)
 # ---- 10. Multivariable Cox regression + forest plot ---------
 cox_multi <- coxph(Surv(OS.year, OS) ~ AQP1_group + age + stage,
                    data = df_multi)
+# Sensitivity analysis: also adjust for sex
+cox_multi2 <- coxph(Surv(OS.year, OS) ~ AQP1_group + age + stage + gender,
+                    data = df_multi)
+summary(cox_multi2)     # AQP1 High: HR = 0.51 (0.36-0.72)
+
 summary(cox_multi)      # AQP1 High: HR = 0.55 (0.39-0.77)
 
 # ggforest() needs a plain data.frame, not a tibble
@@ -130,3 +137,4 @@ p_stage <- ggplot(df_multi, aes(x = stage, y = AQP1, fill = stage)) +
 png("figures/aqp1_by_stage.png", width = 7, height = 5, units = "in", res = 300)
 print(p_stage)
 dev.off()
+
