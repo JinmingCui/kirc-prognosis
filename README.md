@@ -14,7 +14,7 @@ All data were downloaded from the [UCSC Xena](https://xenabrowser.net/) GDC TCGA
 |---|---|
 | `TCGA-KIRC.star_tpm.tsv.gz` | Gene expression (RNA-seq), log2(TPM+1) |
 | `TCGA-KIRC.survival.tsv.gz` | Overall survival time and status |
-| `TCGA-KIRC.clinical.tsv.gz` | Clinical information (age, pathologic stage) |
+| `TCGA-KIRC.clinical.tsv.gz` | Clinical information (age, pathologic stage, sex) |
 
 The data files are not included in this repository because of their size. See [How to reproduce](#how-to-reproduce).
 
@@ -35,7 +35,7 @@ Four patients had two primary tumor samples (`01A` and `01B`); the `01A` sample 
 1. **Grouping.** Patients were divided into AQP1-high and AQP1-low groups at the median AQP1 expression (9.04, log2 TPM+1). A median cut-off was chosen in advance, rather than an "optimal" cut-off, to avoid overestimating the effect.
 2. **Kaplan-Meier analysis.** Overall survival was compared between the two groups using Kaplan-Meier curves and the log-rank test.
 3. **Univariate Cox regression.** The hazard ratio (HR) for AQP1-high vs. AQP1-low was estimated.
-4. **Multivariable Cox regression.** AQP1 group, age (continuous), and AJCC pathologic stage (Stage I as reference) were included in the same model to test whether AQP1 is an independent prognostic factor.
+4. **Multivariable Cox regression.** AQP1 group, age (continuous), and AJCC pathologic stage (Stage I as reference) were included in the same model to test whether AQP1 is an independent prognostic factor. A sensitivity analysis additionally adjusted for sex.
 5. **AQP1 by stage.** AQP1 expression was compared across pathologic stages using the Kruskal-Wallis test.
 
 All analyses were performed in R 4.6.1 with the `tidyverse`, `survival`, and `survminer` packages.
@@ -62,12 +62,12 @@ Median AQP1 expression decreased from Stage I (9.49) to Stage IV (8.33) (Kruskal
 
 ## Conclusion
 
-In 529 patients with clear cell renal cell carcinoma from TCGA, high AQP1 mRNA expression was associated with longer overall survival and remained an independent protective factor after adjusting for age and pathologic stage. These results independently validate, using a different population and measurement method, the findings of Liu et al. (2025).
+In 529 patients with clear cell renal cell carcinoma from TCGA, high AQP1 mRNA expression was associated with longer overall survival and remained an independent protective factor after adjusting for age and pathologic stage. In a sensitivity analysis that also adjusted for sex, the result was unchanged (HR = 0.51, 95% CI 0.36–0.72, p < 0.001); sex itself was not significantly associated with survival (HR = 0.77, 95% CI 0.55–1.07). These results independently validate, using a different population and measurement method, the findings of Liu et al. (2025).
 
 ## Limitations
 
 - **Validation, not discovery.** The association between AQP1 and ccRCC prognosis has been reported before; this project confirms it in an independent dataset.
-- **Limited covariates.** Tumor grade and sex were not included in the multivariable model.
+- **Limited covariates.** Tumor grade was not available in the GDC clinical file (all samples were "Not Reported") and could not be included.
 - **Bulk RNA-seq.** AQP1 is also highly expressed in blood vessel endothelial cells and normal kidney tubules, so tumor AQP1 mRNA may partly reflect tumor vascularity or tumor purity rather than cancer cells alone.
 - **Overall survival only.** Disease-specific survival and progression-free interval were not analyzed.
 - **Model assumptions.** The proportional hazards assumption was not formally tested.
